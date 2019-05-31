@@ -11,11 +11,27 @@ import java_cup.runtime.Symbol;
 %column
 
 
-start = f
-rest = [abc]*
+startf = f
+startn = [abcde]
+startv = [xyz]
+startp = [A-Z]
+
+min = [a-z]
+digit = [0-9]
+
+mindigit = ({min} | {digit})*
+maxdigit = ({startp} | {digit})*
+
 %%
 
 
-{start}{rest} {return new Symbol(LopriorSymbol.FUNCTOR, yytext()); }
+{startf}{mindigit} {     System.out.println("Lexer: " + yytext());
+                    return new Symbol(LopriorSymbol.FUNCTOR, yytext()); }
+{startn}{mindigit} {     System.out.println("Lexer: " + yytext());
+                    return new Symbol(LopriorSymbol.NOMBRE, yytext()); }
+{startv}{mindigit} {     System.out.println("Lexer: " + yytext());
+                    return new Symbol(LopriorSymbol.VARIABLE, yytext()); }    
+{startp}{maxdigit} {     System.out.println("Lexer: " + yytext());
+                    return new Symbol(LopriorSymbol.PREDICADO, yytext()); }                                                  
 .             {return new Symbol(LopriorSymbol.error);             }
 <<EOF>>       {return new Symbol(LopriorSymbol.EOF);               }

@@ -1,9 +1,12 @@
 
-nonterminal term;
-terminal FUNCTOR;
+nonterminal fbf, term, terms;
+terminal NOMBRE, FUNCTOR, VARIABLE, PREDICADO ;
 
 
 start with term;
 
 term ::= FUNCTOR
+     |   NOMBRE
+     |   VARIABLE
+     |   PREDICADO
      ;
