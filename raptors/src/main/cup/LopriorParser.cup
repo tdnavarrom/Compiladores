@@ -1,0 +1,9 @@
+
+nonterminal term;
+terminal FUNCTOR;
+
+
+start with term;
+
+term ::= FUNCTOR
+     ;
