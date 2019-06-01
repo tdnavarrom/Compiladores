@@ -39,20 +39,34 @@ WhiteSpace     = {LineTerminator} | [ \t\n]
 
 %%
 
-{lparen}           { return new Symbol(LopriorSymbol.LPAREN, yytext());    }
-{rparen}           { return new Symbol(LopriorSymbol.RPAREN, yytext());    }
-{s_for_all}        { return new Symbol(LopriorSymbol.FORALL, yytext());    }
-{s_exist}          { return new Symbol(LopriorSymbol.EXIST, yytext());     }
-{s_negation}       { return new Symbol(LopriorSymbol.NEGATION, yytext());  }
-{startv}{mindigit} { return new Symbol(LopriorSymbol.VARIABLE, yytext());  } 
-{startp}{maxdigit} { return new Symbol(LopriorSymbol.PREDICADO, yytext()); }
-{s_then}           { return new Symbol(LopriorSymbol.THEN, yytext());      }
-{s_bithen}         { return new Symbol(LopriorSymbol.BITHEN, yytext());    }
-{s_and}            { return new Symbol(LopriorSymbol.AND, yytext());       }
-{s_or}             { return new Symbol(LopriorSymbol.OR, yytext());        }
-{s_comma}          { return new Symbol(LopriorSymbol.SEPARATOR, yytext()); }
-{startf}{mindigit} { return new Symbol(LopriorSymbol.FUNCTOR, yytext());   }
-{startn}{mindigit} { return new Symbol(LopriorSymbol.NOMBRE, yytext());    }
+{lparen}           {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.LPAREN, yytext());    }
+{rparen}           {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.RPAREN, yytext());    }
+{s_for_all}        {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.FORALL, yytext());    }
+{s_exist}          {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.EXIST, yytext());     }
+{s_negation}       {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.NEGATION, yytext());  }
+{startv}{mindigit} {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.VARIABLE, yytext());  } 
+{startp}{maxdigit} {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.PREDICADO, yytext()); }
+{s_then}           {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.THEN, yytext());      }
+{s_bithen}         {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.BITHEN, yytext());    }
+{s_and}            {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.AND, yytext());       }
+{s_or}             {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.OR, yytext());        }
+{s_comma}          {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.SEPARATOR, yytext()); }
+{startf}{mindigit} {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.FUNCTOR, yytext());   }
+{startn}{mindigit} {  System.out.println("Lexer" + yytext());
+                      return new Symbol(LopriorSymbol.NOMBRE, yytext());    }
    
                                                  
 {WhiteSpace}       {                                                       }

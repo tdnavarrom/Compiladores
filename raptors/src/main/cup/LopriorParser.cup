@@ -17,11 +17,11 @@ fbf   ::= PREDICADO LPAREN terms RPAREN
 
       
 
-terms ::= fbf
-      |   term
+terms ::= term SEPARATOR terms
+      | term
       ;
 
-term  ::= FUNCTOR LPAREN term:t1 RPAREN {:RESULT = t1;:}
+term  ::= FUNCTOR LPAREN terms:t1 RPAREN {:RESULT = t1;:}
       |   NOMBRE
       |   VARIABLE
       ;
