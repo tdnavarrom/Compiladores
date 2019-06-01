@@ -5,24 +5,23 @@ terminal NOMBRE, FUNCTOR, VARIABLE, PREDICADO, FORALL, EXIST, LPAREN, RPAREN, NE
 
 start with fbf;
 
-fbf   ::= LPAREN terms RPAREN
-      |   NEGATION terms
-      |   terms AND terms
-      |   terms OR terms
-      |   terms THEN terms
-      |   terms BITHEN terms
-      |   FORALL VARIABLE fbf
-      |   EXIST VARIABLE fbf
+fbf   ::= PREDICADO LPAREN terms RPAREN        
+      |   NEGATION fbf             
+      |   LPAREN fbf AND fbf RPAREN 
+      |   LPAREN fbf OR fbf RPAREN
+      |   LPAREN fbf THEN fbf RPAREN
+      |   LPAREN fbf BITHEN fbf RPAREN 
+      |   FORALL VARIABLE fbf    
+      |   EXIST VARIABLE fbf       
       ;
 
       
 
-terms ::= PREDICADO LPAREN term RPAREN
+terms ::= fbf
       |   term
       ;
 
-term  ::= FUNCTOR LPAREN term RPAREN
+term  ::= FUNCTOR LPAREN term:t1 RPAREN {:RESULT = t1;:}
       |   NOMBRE
       |   VARIABLE
-      |   SEPARATOR
       ;

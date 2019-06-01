@@ -27,6 +27,7 @@ lparen  = "("
 rparen  = ")"
 
 
+
 min = [a-z]
 digit = [0-9]
 
@@ -56,4 +57,4 @@ WhiteSpace     = {LineTerminator} | [ \t\n]
                                                  
 {WhiteSpace}       {                                                       }
 .                  { return new Symbol(LopriorSymbol.error);               }
-<<EOF>>            {return new Symbol(LopriorSymbol.EOF);                  }
+<<EOF>>            { return new Symbol(LopriorSymbol.EOF);                 }
