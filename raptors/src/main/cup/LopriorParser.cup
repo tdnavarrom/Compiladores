@@ -1,12 +1,28 @@
 
 nonterminal fbf, term, terms;
-terminal NOMBRE, FUNCTOR, VARIABLE, PREDICADO ;
+terminal NOMBRE, FUNCTOR, VARIABLE, PREDICADO, FORALL, EXIST, LPAREN, RPAREN, NEGATION, AND, OR, THEN, BITHEN, SEPARATOR;
 
 
-start with term;
+start with fbf;
 
-term ::= FUNCTOR
-     |   NOMBRE
-     |   VARIABLE
-     |   PREDICADO
-     ;
+fbf   ::= LPAREN terms RPAREN
+      |   NEGATION terms
+      |   terms AND terms
+      |   terms OR terms
+      |   terms THEN terms
+      |   terms BITHEN terms
+      |   FORALL VARIABLE fbf
+      |   EXIST VARIABLE fbf
+      ;
+
+      
+
+terms ::= PREDICADO LPAREN term RPAREN
+      |   term
+      ;
+
+term  ::= FUNCTOR LPAREN term RPAREN
+      |   NOMBRE
+      |   VARIABLE
+      |   SEPARATOR
+      ;
