@@ -18,8 +18,8 @@ startp = [A-Z]
 s_for_all = "$"
 s_exist = "&"
 s_negation = "!"
-s_then = ">"
-s_bithen = "<>"
+s_cond = ">"
+s_bicond = "<>"
 s_and = "∗"
 s_or = "+"
 s_comma = ","
@@ -46,8 +46,8 @@ WhiteSpace     = {LineTerminator} | [ \t\n]
 {s_negation}       { return new Symbol(LopriorSymbol.NEGATION, yytext());  }
 {startv}{mindigit} { return new Symbol(LopriorSymbol.VARIABLE, yytext());  } 
 {startp}{maxdigit} { return new Symbol(LopriorSymbol.PREDICADO, yytext()); }
-{s_then}           { return new Symbol(LopriorSymbol.THEN, yytext());      }
-{s_bithen}         { return new Symbol(LopriorSymbol.BITHEN, yytext());    }
+{s_cond}           { return new Symbol(LopriorSymbol.COND, yytext());      }
+{s_bicond}         { return new Symbol(LopriorSymbol.BICOND, yytext());    }
 {s_and}            { return new Symbol(LopriorSymbol.AND, yytext());       }
 {s_or}             { return new Symbol(LopriorSymbol.OR, yytext());        }
 {s_comma}          { return new Symbol(LopriorSymbol.SEPARATOR, yytext()); }
