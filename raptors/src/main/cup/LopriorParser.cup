@@ -15,8 +15,6 @@ fbf   ::= PREDICADO LPAREN terms RPAREN
       |   EXIST VARIABLE fbf       
       ;
 
-      
-
 terms ::= term SEPARATOR terms
       | term
       ;
