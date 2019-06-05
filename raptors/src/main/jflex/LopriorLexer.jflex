@@ -25,8 +25,9 @@ s_or = "+"
 s_comma = ","
 lparen  = "("
 rparen  = ")"
+comment = "#"{com}*{LineTerminator}
 
-
+com = {min} | {startp}
 
 min = [a-z]
 digit = [0-9]
@@ -39,6 +40,7 @@ WhiteSpace     = {LineTerminator} | [ \t\n]
 
 %%
 
+{comment}           
 {lparen}           { return new Symbol(LopriorSymbol.LPAREN, yytext());    }
 {rparen}           { return new Symbol(LopriorSymbol.RPAREN, yytext());    }
 {s_for_all}        { return new Symbol(LopriorSymbol.FORALL, yytext());    }
@@ -54,7 +56,7 @@ WhiteSpace     = {LineTerminator} | [ \t\n]
 {startf}{mindigit} { return new Symbol(LopriorSymbol.FUNCTOR, yytext());   }
 {startn}{mindigit} { return new Symbol(LopriorSymbol.NOMBRE, yytext());    }
    
-                                                 
+ {comment}         {                                                       }                                                
 {WhiteSpace}       {                                                       }
 .                  { return new Symbol(LopriorSymbol.error);               }
 <<EOF>>            { return new Symbol(LopriorSymbol.EOF);                 }
