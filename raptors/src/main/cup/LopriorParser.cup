@@ -2,6 +2,17 @@ import java_cup.runtime.*;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.*;
 import java.util.ArrayList;
 
+parser code {:
+
+                public void syntax_error(Symbol cur_token){}
+                public void unrecovered_syntax_error(Symbol cur_token) throws Exception{
+                    throw new Exception();
+                }
+
+             :}
+
+
+
 terminal NOMBRE, FUNCTOR, VARIABLE, PREDICADO, FORALL, EXIST, LPAREN, RPAREN, NEGATION, AND, OR, COND, BICOND, SEPARATOR;
 
 nonterminal ASTfbf loprior, fbf;

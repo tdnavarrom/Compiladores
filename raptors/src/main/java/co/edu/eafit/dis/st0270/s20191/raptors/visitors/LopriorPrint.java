@@ -102,6 +102,7 @@ public class LopriorPrint implements VisitorFBF {
         TermEval te = new TermEval();
 
         res = predicate.getNewVar() + te.getRes();
+        System.out.println(res);
     }
 
     public void visit(ForAllNode forall) {
