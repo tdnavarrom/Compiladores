@@ -1,15 +1,9 @@
 package co.edu.eafit.dis.st0270.s20191.raptors.abs;
 
-import co.edu.eafit.dis.st0270.s20191.raptors.visitors.VisitorFBF;
+import co.edu.eafit.dis.st0270.s20191.raptors.visitors.LopriorVisitor;
 
-public class Loprior extends UnaryNode {
-
-    public Loprior(ASTfbf asTfbf){
-         super.setChild(asTfbf);
-    }
-
-    public void accept(VisitorFBF visitor) {
-    	visitor.visit(this);
-    }
+public abstract class Loprior {
+    
+    public abstract void accept(LopriorVisitor visitor);
 
 }
