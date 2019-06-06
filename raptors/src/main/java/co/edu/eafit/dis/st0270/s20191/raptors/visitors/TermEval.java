@@ -2,6 +2,7 @@ package co.edu.eafit.dis.st0270.s20191.raptors.visitors;
 
 import java.util.HashMap;
 
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.ASTTerm;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.FunctorNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.NameNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.VariableNode;
@@ -23,7 +24,7 @@ public class TermEval implements VisitorTerm {
             nmap.put(str, val);
         }else{
             while(nmap.containsValue(val) != false){
-                val += "''";
+                val += "'";
             }
             nmap.put(str, val);
         }
@@ -40,7 +41,7 @@ public class TermEval implements VisitorTerm {
             vmap.put(str, val);
         }else{
             while(vmap.containsValue(val) != false){
-                val += "''";
+                val += "'";
             }
             vmap.put(str, val);
         }
@@ -53,20 +54,32 @@ public class TermEval implements VisitorTerm {
     public void visit(FunctorNode functor) {
         String str = functor.getVar();
         String val = "f";
+
+        for(int i = 0; i < functor.listTerms.size(); i++){
+            val += "*";
+        }
+
         if(fmap.containsValue(val) ==  false){
             fmap.put(str, val);
         }else{
             while(fmap.containsValue(val) != false){
-                val += "''";
+                val += "'";
             }
             fmap.put(str, val);
         }
 
-        TermEval te = new TermEval();
+        res = functor.getNewVar() + "(";
 
-        functor.setNewVar(val);
+        for(ASTTerm t : functor.listTerms){
 
-        res = val + te.getRes(); 
+            TermEval tEval = new TermEval();
+            t.accept(tEval);
+            res += tEval.getRes() + ","; 
+
+        }
+
+        res = res.substring(0, res.length() - 1) + ")";
+        
     }
 
     public String getRes(){

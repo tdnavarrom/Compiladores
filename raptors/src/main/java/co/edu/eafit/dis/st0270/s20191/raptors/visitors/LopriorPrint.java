@@ -2,6 +2,7 @@ package co.edu.eafit.dis.st0270.s20191.raptors.visitors;
 
 import java.util.HashMap;
 
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.ASTTerm;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.ASTfbf;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.AndNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.BicondNode;
@@ -88,25 +89,42 @@ public class LopriorPrint implements VisitorFBF {
 
         String str = predicate.getVar();
         String val = "P";
+
+        for(int i = 0; i < predicate.listTerms.size(); i++){
+            val += "*";
+        }
+
         if(pmap.containsValue(val) ==  false){
             pmap.put(str, val);
         }else{
             while(pmap.containsValue(val) != false){
-                val += "*";
+                val += "'";
             }
             pmap.put(str, val);
         }
 
         predicate.setNewVar(val);
 
-        TermEval te = new TermEval();
+        
 
-        res = predicate.getNewVar() + te.getRes();
+        res = predicate.getNewVar() + "(";
+
+        for(ASTTerm t : predicate.listTerms){
+
+            TermEval tEval = new TermEval();
+            t.accept(tEval);
+            res += tEval.getRes() + ","; 
+
+        }
+
+        res = res.substring(0, res.length() - 1) + ")";
+        
         System.out.println(res);
     }
 
     public void visit(ForAllNode forall) {
         res ="∀ " + getUnaryResult(forall);
+        System.out.println("Forall: " + res);
     }
 
     public void visit(ExistNode exist) {
