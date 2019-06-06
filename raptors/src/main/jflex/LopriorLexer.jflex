@@ -1,6 +1,8 @@
 package co.edu.eafit.dis.st0270.s20191.raptors.flex;
 
 import co.edu.eafit.dis.st0270.s20191.raptors.parser.LopriorSymbol;
+import co.edu.eafit.dis.st0270.s20191.raptors.LopriorMain;
+
 import java_cup.runtime.Symbol;
 
 %%
@@ -25,9 +27,9 @@ s_or = "+"
 s_comma = ","
 lparen  = "("
 rparen  = ")"
-comment = "#"{com}*{LineTerminator}
+comment = "#"{com}*{LineTerminator}?
 
-com = {min} | {startp}
+com = [^\r\n]
 
 min = [a-z]
 digit = [0-9]
@@ -40,23 +42,22 @@ WhiteSpace     = {LineTerminator} | [ \t\n]
 
 %%
 
-{comment}           
-{lparen}           { return new Symbol(LopriorSymbol.LPAREN, yytext());    }
-{rparen}           { return new Symbol(LopriorSymbol.RPAREN, yytext());    }
-{s_for_all}        { return new Symbol(LopriorSymbol.FORALL, yytext());    }
-{s_exist}          { return new Symbol(LopriorSymbol.EXIST, yytext());     }
-{s_negation}       { return new Symbol(LopriorSymbol.NEGATION, yytext());  }
-{startv}{mindigit} { return new Symbol(LopriorSymbol.VARIABLE, yytext());  } 
-{startp}{maxdigit} { return new Symbol(LopriorSymbol.PREDICADO, yytext()); }
-{s_cond}           { return new Symbol(LopriorSymbol.COND, yytext());      }
-{s_bicond}         { return new Symbol(LopriorSymbol.BICOND, yytext());    }
-{s_and}            { return new Symbol(LopriorSymbol.AND, yytext());       }
-{s_or}             { return new Symbol(LopriorSymbol.OR, yytext());        }
-{s_comma}          { return new Symbol(LopriorSymbol.SEPARATOR, yytext()); }
-{startf}{mindigit} { return new Symbol(LopriorSymbol.FUNCTOR, yytext());   }
-{startn}{mindigit} { return new Symbol(LopriorSymbol.NOMBRE, yytext());    }
+{lparen}           {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"associative"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.LPAREN, yytext());    }
+{rparen}           {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"associative"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.RPAREN, yytext());    }
+{s_for_all}        {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"quantifier"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.FORALL, yytext());    }
+{s_exist}          {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"quantifier"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.EXIST, yytext());     }
+{s_negation}       {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"operator"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.NEGATION, yytext());  }
+{startv}{mindigit} {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"variable"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.VARIABLE, yytext());  } 
+{startp}{maxdigit} {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"predicate"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.PREDICADO, yytext()); }
+{s_cond}           {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"operator"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.COND, yytext());      }
+{s_bicond}         {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"operator"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.BICOND, yytext());    }
+{s_and}            {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"operator"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.AND, yytext());       }
+{s_or}             {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"operator"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.OR, yytext());        }
+{s_comma}          {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"separator"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.SEPARATOR, yytext()); }
+{startf}{mindigit} {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"functor"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.FUNCTOR, yytext());   }
+{startn}{mindigit} {LopriorMain lm= new LopriorMain(); if(lm.s)System.out.println("["+yyline+","+yycolumn+","+"name"+",\""+yytext()+"\"]"); return new Symbol(LopriorSymbol.NOMBRE, yytext());    }
    
- {comment}         {                                                       }                                                
+{comment}          {                                                       }                                                
 {WhiteSpace}       {                                                       }
 .                  { return new Symbol(LopriorSymbol.error);               }
 <<EOF>>            { return new Symbol(LopriorSymbol.EOF);                 }

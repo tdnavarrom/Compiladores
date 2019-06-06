@@ -1,23 +1,27 @@
 package co.edu.eafit.dis.st0270.s20191.raptors.visitors;
 
+import java.util.HashMap;
+
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.ASTfbf;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.AndNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.BicondNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.BinaryNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.CondNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.ExistNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.ForAllNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.Loprior;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.LopriorRoot;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Name;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Negation;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.LopriorNode;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.And;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Or;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Predicate;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Cond;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Exist;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.ForAll;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Functor;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Bicond;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.Variable;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.NameNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.NegationNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.OrNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.PredicateNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.UnaryNode;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.VariableNode;
 
-public class LopriorPrint implements LopriorVisitor {
+public class LopriorPrint implements VisitorFBF {
 
-    private String res = null;
+    private String res = "";
+    private UnaryNode loprior;
+    private HashMap<String, String> pmap= new HashMap<String, String>();
 
     public LopriorPrint() {
     }
@@ -26,9 +30,9 @@ public class LopriorPrint implements LopriorVisitor {
         return res;
     }
 
-    private String getLeftResult(LopriorNode loprior) {
+    private String getLeftResult(BinaryNode ASTfbf) {
 
-        Loprior left = loprior.getLeftChild();
+        ASTfbf left = ASTfbf.getLeftChild();
         LopriorPrint calleft = new LopriorPrint();
 
         left.accept(calleft);
@@ -36,9 +40,9 @@ public class LopriorPrint implements LopriorVisitor {
         return calleft.getResult();
     }
 
-    private String getRightResult(LopriorNode loprior) {
+    private String getRightResult(BinaryNode ASTfbf) {
 
-        Loprior right = loprior.getRightChild();
+        ASTfbf right = ASTfbf.getRightChild();
         LopriorPrint calright = new LopriorPrint();
 
         right.accept(calright);
@@ -46,61 +50,88 @@ public class LopriorPrint implements LopriorVisitor {
         return calright.getResult();
     }
 
+    private String getUnaryResult(UnaryNode loprior) {
+
+        this.loprior = loprior;
+        ASTfbf right = loprior.getChild();
+        LopriorPrint calright = new LopriorPrint();
+
+        right.accept(calright);
+
+        return calright.getResult();
+    }
+
+
     public void visit(Loprior loprior) {
     }
 
-    public void visit(LopriorRoot root) {
-        Loprior loprior = root.getloprior();
-        LopriorPrint ep = new LopriorPrint();
-        loprior.accept(ep);
-        res = new String(ep.getResult());
-    }
 
-    public void visit(And and) {
+    public void visit(AndNode and) {
 
         res = "( " + getLeftResult(and) + " ∧ " + getRightResult(and) + " )";
     }
 
-    public void visit(Or or) {
+    public void visit(OrNode or) {
 
         res = "(" + getLeftResult(or) + " ∨ " + getRightResult(or) + " )";
     }
 
-    public void visit(Cond cond) {
+    public void visit(CondNode cond) {
 
         res = "( " + getLeftResult(cond) + " → " + getRightResult(cond) + " )";
     }
 
-    public void visit(Bicond bicond) {
+    public void visit(BicondNode bicond) {
 
         res = "( " + getLeftResult(bicond) + " ↔ " + getRightResult(bicond) + " )";
     }
 
-    public void visit(Variable var) {
+    public void visit(VariableNode var) {
         res = var.toString();
     }
 
-    public void visit(Name name) {
+    public void visit(NameNode name) {
         res = name.toString();
     }
 
-    public void visit(Functor functor) {
-        res = functor.toString();
+    public void visit(PredicateNode predicate) {
+
+        String str = predicate.getVar();
+        String val = "P";
+        if(pmap.containsValue(val) ==  false){
+            pmap.put(str, val);
+        }else{
+            while(pmap.containsValue(val) != false){
+                val += "*";
+            }
+            pmap.put(str, val);
+        }
+
+        predicate.setNewVar(val);
+
+        TermEval te = new TermEval();
+
+        res = predicate.getNewVar() + te.getRes();
     }
 
-    public void visit(Predicate predicate) {
-        res = predicate.toString();
+    public void visit(ForAllNode forall) {
+        res ="∀ " + getUnaryResult(forall);
     }
 
-    public void visit(ForAll forall) {
-        res ="∀ " + getRightResult(forall);
+    public void visit(ExistNode exist) {
+        res ="∃ " + getUnaryResult(exist);
     }
 
-    public void visit(Exist exist) {
-        res ="∃ " + getRightResult(exist);
+    public void visit(NegationNode negation) {
+        res = "¬ " + getUnaryResult(negation);
     }
 
-    public void visit(Negation negation) {
-        res = "¬ " + getRightResult(negation);
+    public void visit(UnaryNode unaryNode) {
+
     }
+
+    public void visit(BinaryNode binaryNode) {
+
+    }
+
 }

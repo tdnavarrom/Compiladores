@@ -1,25 +1,33 @@
+import java_cup.runtime.*;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.*;
+import java.util.ArrayList;
 
-nonterminal fbf, term, terms;
 terminal NOMBRE, FUNCTOR, VARIABLE, PREDICADO, FORALL, EXIST, LPAREN, RPAREN, NEGATION, AND, OR, COND, BICOND, SEPARATOR;
 
+nonterminal ASTfbf loprior, fbf;
+nonterminal ASTTerm term;
+nonterminal ArrayList<ASTTerm> terms;
 
-start with fbf;
+start with loprior;
 
-fbf   ::= PREDICADO LPAREN terms RPAREN        
-      |   NEGATION fbf             
-      |   LPAREN fbf AND fbf RPAREN 
-      |   LPAREN fbf OR fbf RPAREN
-      |   LPAREN fbf COND fbf RPAREN
-      |   LPAREN fbf BICOND fbf RPAREN 
-      |   FORALL VARIABLE fbf    
-      |   EXIST VARIABLE fbf       
+loprior ::= fbf:fb1                                                     {: RESULT = new Loprior(fb1);                                                  :}
+        ;
+
+fbf   ::= PREDICADO:predicate LPAREN terms:t1 RPAREN                    {: RESULT = new PredicateNode((String) predicate, t1);                         :}
+      |   NEGATION fbf:fb1                                              {: RESULT = new NegationNode(fb1);                                             :}
+      |   LPAREN fbf:fb1 AND fbf:fb2 RPAREN                             {: RESULT = new AndNode(fb1, fb2);                                             :}
+      |   LPAREN fbf:fb1 OR fbf:fb2 RPAREN                              {: RESULT = new OrNode(fb1, fb2);                                              :}
+      |   LPAREN fbf:fb1 COND fbf:fb2 RPAREN                            {: RESULT = new CondNode(fb1, fb2);                                            :}
+      |   LPAREN fbf:fb1 BICOND fbf:fb2 RPAREN                          {: RESULT = new BicondNode(fb1, fb2);                                          :}
+      |   FORALL VARIABLE:v fbf:fb1                                     {: RESULT = new ForAllNode((String) v, fb1);                                   :}
+      |   EXIST VARIABLE:v fbf:fb1                                      {: RESULT = new ExistNode((String) v, fb1);                                    :}
       ;
 
-terms ::= term SEPARATOR terms
-      | term
+terms ::= term:t SEPARATOR terms:lista                                  {: lista.add(t); RESULT = lista;                                               :}
+      | term:t                                                          {: ArrayList<ASTTerm> lista = new ArrayList(); lista.add(t); RESULT = lista;   :} 
       ;
-
-term  ::= FUNCTOR LPAREN terms:t1 RPAREN {:RESULT = t1;:}
-      |   NOMBRE
-      |   VARIABLE
+ 
+term  ::= FUNCTOR:func LPAREN terms:t1 RPAREN                           {: RESULT = new FunctorNode((String) func, t1);                                :}
+      |   NOMBRE:name                                                   {: RESULT = new NameNode((String) name);                                       :}
+      |   VARIABLE:var                                                  {: RESULT = new VariableNode((String) var);                                    :}
       ;
