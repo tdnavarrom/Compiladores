@@ -58,12 +58,5 @@ public class LopriorMain {
 
         }       
     }
-	
-	
-	public static void usage() {
-		System.err.println("Uso: java TeddyMain [-s] [-p] [-n] [-f] <ficheros> ...");
-		System.exit(1);
-    }
-    
     
 }
