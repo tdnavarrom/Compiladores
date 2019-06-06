@@ -31,7 +31,7 @@ public class TermEval implements VisitorTerm {
 
         name.setNewVar(val);
 
-        res = val;
+        this.res = val;
     }
 
     public void visit(VariableNode variable) {
@@ -48,7 +48,7 @@ public class TermEval implements VisitorTerm {
 
         variable.setNewVar(val);
 
-        res = val;
+        this.res = val;
     }
 
     public void visit(FunctorNode functor) {
@@ -74,16 +74,16 @@ public class TermEval implements VisitorTerm {
 
             TermEval tEval = new TermEval();
             t.accept(tEval);
-            res += tEval.getRes() + ","; 
+            this.res += tEval.getRes() + ","; 
 
         }
 
-        res = res.substring(0, res.length() - 1) + ")";
+        this.res = res.substring(0, res.length() - 1) + ")";
         
     }
 
     public String getRes(){
-        return res;
+        return this.res;
     }
 
     
