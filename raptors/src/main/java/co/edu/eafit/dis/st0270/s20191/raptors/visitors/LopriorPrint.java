@@ -10,12 +10,10 @@ import co.edu.eafit.dis.st0270.s20191.raptors.abs.CondNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.ExistNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.ForAllNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.Loprior;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.NameNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.NegationNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.OrNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.PredicateNode;
 import co.edu.eafit.dis.st0270.s20191.raptors.abs.UnaryNode;
-import co.edu.eafit.dis.st0270.s20191.raptors.abs.VariableNode;
 
 public class LopriorPrint implements VisitorFBF {
 
@@ -84,14 +82,6 @@ public class LopriorPrint implements VisitorFBF {
     public void visit(BicondNode bicond) {
 
         res = "( " + getLeftResult(bicond) + " ↔ " + getRightResult(bicond) + " )";
-    }
-
-    public void visit(VariableNode var) {
-        res = var.toString();
-    }
-
-    public void visit(NameNode name) {
-        res = name.toString();
     }
 
     public void visit(PredicateNode predicate) {
