@@ -1,7 +1,8 @@
 package co.edu.eafit.dis.st0270.s20191.raptors;
 
-
 import co.edu.eafit.dis.st0270.s20191.raptors.parser.LopriorParser;
+import co.edu.eafit.dis.st0270.s20191.raptors.visitors.LopriorPrint;
+import co.edu.eafit.dis.st0270.s20191.raptors.abs.Loprior;
 import co.edu.eafit.dis.st0270.s20191.raptors.flex.LopriorLexer;
 
 import java.io.FileReader;
@@ -44,7 +45,15 @@ public class LopriorMain {
                 LopriorLexer lexer = new LopriorLexer(fr);
                 LopriorParser parser = new LopriorParser(lexer);
                 verificador = true;
-                parser.parse();
+
+                Loprior tree = (Loprior) parser.parse().value;
+
+                LopriorPrint lp = new LopriorPrint();
+                tree.accept(lp);
+
+                System.out.println(lp.getResult());
+                
+
             } catch (FileNotFoundException info ) {
                 System.err.println("File: " + args[i] + " not found");
             } catch (IOException ioe){
